@@ -4,4 +4,5 @@ I'm Riya, a recent MSCS graduate from Georgia Tech with 2 years of industry expe
 
 Feel free to reach out at riyaroshan1212@gmail.com if you'd like to chat, collaborate, or just discuss something interesting! 
 
+<img src="koi/koi.gif" width="256" alt="My GitHub Koi" />
 
