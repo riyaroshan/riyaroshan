@@ -1,9 +1,9 @@
 
-name: Generate Git Koi
+name: Koi
 
 on:
   schedule:
-    - cron: "5 0 * * *"
+    - cron: "20 0 * * *"
   workflow_dispatch:
   push:
     paths:
@@ -12,20 +12,32 @@ on:
 permissions:
   contents: write
 
+concurrency: koi
+
 jobs:
-  generate:
+  koi:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Generate koi
-        uses: yalongwastaken/git-koi@v1
+      - uses: actions/checkout@v7
+
+      - uses: yalongwastaken/git-koi@v1
         with:
           body: asagi
+          output-dir: koi
 
-      - name: Commit koi
+      - name: Commit the koi if it changed
+        shell: bash
         run: |
-          git config user.name github-actions[bot]
-          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add koi/koi.gif
-          git diff --cached --quiet || git commit -m "Update Git Koi"
-          git push
+
+          if git diff --cached --quiet; then
+            echo "The koi is unchanged."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git commit --quiet --message "koi: draw the day's koi"
+          git push --quiet
